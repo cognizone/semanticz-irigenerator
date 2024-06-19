@@ -42,6 +42,8 @@ tasks.withType<JavaCompile> {
 dependencies {
     implementation("org.apache.jena:jena-arq:$jenaVersion")
     implementation("com.google.guava:guava:$guavaVersion")
+    implementation("org.springframework:spring-core:$springVersion")
+    implementation("org.springframework:spring-context:$springVersion")
     implementation("org.springframework:spring-expression:$springVersion")
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
     implementation("cz.cvut.kbss.jsonld:jb4jsonld-jackson:$jb4jsonldJacksonVersion")

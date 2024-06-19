@@ -16,7 +16,7 @@ import zone.cogni.asquare.cube.urigenerator.json.UriGenerator;
 import zone.cogni.asquare.cube.urigenerator.json.UriGeneratorRoot;
 import zone.cogni.asquare.triplestore.RdfStoreService;
 import zone.cogni.asquare.triplestore.jenamemory.InternalRdfStoreService;
-import zone.cogni.sem.jena.template.JenaResultSetHandlers;
+import zone.cogni.sem.jena.template.JenaQueryUtils;
 
 import jakarta.annotation.Nonnull;
 import java.io.StringWriter;
@@ -46,14 +46,6 @@ public class UriGeneratorCalculator {
 
   private void initPreparedStatements() {
     preparedStatements.put("exists-uri", QueryFactory.create("ask { { ?x ?p ?o } union { ?s ?p ?x } } "));
-  }
-
-  public String createTemporaryUri() {
-    return newUriPrefix + "/" + UUID.randomUUID();
-  }
-
-  public boolean isNewUri(@Nonnull String uri) {
-    return uri.startsWith(newUriPrefix);
   }
 
   public Model convert(Model model, Map<String, String> context) {
@@ -242,7 +234,7 @@ public class UriGeneratorCalculator {
 
   private List<Map<String, RDFNode>> queryForListOfMaps(RdfStoreService rdfStore, String variableQuery) {
     try {
-      return rdfStore.executeSelectQuery(variableQuery, JenaResultSetHandlers.listOfMapsResolver);
+      return rdfStore.executeSelectQuery(variableQuery, JenaQueryUtils::convertToListOfMaps);
     }
     catch (RuntimeException e) {
       throw new RuntimeException("Query failed: \n" + variableQuery, e);
