@@ -31,13 +31,6 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
  */
 public class Json5Light {
 
-  /**
-   * @return a builder which we can use to configure some of the JSON5 features
-   */
-  public static Builder builder() {
-    return new Builder();
-  }
-
 
   /**
    * <p>
