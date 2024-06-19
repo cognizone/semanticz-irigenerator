@@ -46,7 +46,7 @@ public class Json5Light {
    * as many features as possible enabled.
    */
   public static ObjectMapper getJson5Mapper() {
-    return new Builder().allowEcmascriptIdentifier()
+    return new Json5Builder().allowEcmascriptIdentifier()
                         .allowSingleTrailingComma()
                         .allowSingleQuotedStrings()
                         .allowMultilineStrings()
@@ -56,21 +56,21 @@ public class Json5Light {
                         .build();
   }
 
-  public static class Builder {
+  public static class Json5Builder {
 
     private final JsonMapper.Builder builder = JsonMapper.builder();
 
-    public Builder allowEcmascriptIdentifier() {
+    public Json5Builder allowEcmascriptIdentifier() {
       builder.enable(JsonReadFeature.ALLOW_UNQUOTED_FIELD_NAMES);
       return this;
     }
 
-    public Builder allowSingleTrailingComma() {
+    public Json5Builder allowSingleTrailingComma() {
       builder.enable(JsonReadFeature.ALLOW_TRAILING_COMMA);
       return this;
     }
 
-    public Builder allowSingleQuotedStrings() {
+    public Json5Builder allowSingleQuotedStrings() {
       builder.enable(JsonReadFeature.ALLOW_SINGLE_QUOTES);
       return this;
     }
@@ -79,7 +79,7 @@ public class Json5Light {
      * Not sure if it 100% follow specifications, but if not it is an approximation.
      * Builder returned only allows multiline strings in case they are using double-quotes e.g. <code>"example"</code>
      */
-    public Builder allowMultilineStrings() {
+    public Json5Builder allowMultilineStrings() {
       builder.enable(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS)
              .enable(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER);
       return this;
@@ -88,17 +88,17 @@ public class Json5Light {
     /**
      * Not sure if it 100% follow specifications, but if not it is an approximation.
      */
-    public Builder allowCharacterEscapes() {
+    public Json5Builder allowCharacterEscapes() {
       builder.enable(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER);
       return this;
     }
 
-    public Builder allowNonNumericNumbers() {
+    public Json5Builder allowNonNumericNumbers() {
       builder.enable(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS);
       return this;
     }
 
-    public Builder allowComments() {
+    public Json5Builder allowComments() {
       builder.enable(JsonReadFeature.ALLOW_JAVA_COMMENTS);
       return this;
     }

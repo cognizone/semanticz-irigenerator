@@ -6,6 +6,9 @@ val jupiterVersion = "5.10.2"
 
 plugins {
     `java-library`
+    pmd
+    jacoco
+    id("org.owasp.dependencycheck") version "9.2.0"
 }
 
 group = "zone.cogni.libs"
@@ -21,6 +24,13 @@ java {
     }
 }
 
+pmd {
+    isIgnoreFailures = true
+    isConsoleOutput = true
+    toolVersion = "7.0.0"
+    rulesMinimumPriority = 5
+}
+
 tasks.withType<JavaCompile> {
     sourceCompatibility = JavaVersion.VERSION_11.toString()
     targetCompatibility = JavaVersion.VERSION_11.toString()
@@ -34,8 +44,21 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.register("qualityCheck") {
+    dependsOn(tasks.pmdMain)
+    dependsOn(tasks.pmdTest)
+    dependsOn(tasks.jacocoTestReport)
+    dependsOn(tasks.dependencyCheckAnalyze)
 }
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
 }

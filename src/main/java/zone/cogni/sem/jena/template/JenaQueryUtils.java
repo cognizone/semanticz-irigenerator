@@ -6,7 +6,7 @@ import org.apache.jena.rdf.model.RDFNode;
 import java.util.*;
 
 
-public abstract class JenaQueryUtils {
+public class JenaQueryUtils {
 
   public static List<Map<String, RDFNode>> convertToListOfMaps(ResultSet resultSet) {
     final List<Map<String, RDFNode>> result = new ArrayList<>();
