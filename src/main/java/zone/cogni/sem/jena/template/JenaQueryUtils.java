@@ -9,33 +9,14 @@ import java.util.*;
 public abstract class JenaQueryUtils {
 
   public static List<Map<String, RDFNode>> convertToListOfMaps(ResultSet resultSet) {
-    List<Map<String, RDFNode>> result = new ArrayList<>();
-
+    final List<Map<String, RDFNode>> result = new ArrayList<>();
 
     while (resultSet.hasNext()) {
-      QuerySolution querySolution = resultSet.next();
-      result.add(convertRowToMap(resultSet.getResultVars(), querySolution));
-    }
-
-    return result;
-  }
-
-  // note: please keep resultVars !!
-  private static Map<String, RDFNode> convertRowToMap(List<String> resultVars, QuerySolution querySolution) {
-    Map<String, RDFNode> result = new HashMap<>();
-    resultVars.forEach(var -> result.put(var, querySolution.get(var)));
-
-    return result;
-  }
-
-  @Deprecated
-  public static Map<String, RDFNode> convertRowToMap(QuerySolution querySolution) {
-    Map<String, RDFNode> result = new HashMap<>();
-
-    Iterator varNames = querySolution.varNames();
-    while (varNames.hasNext()) {
-      String varName = (String) varNames.next();
-      result.put(varName, querySolution.get(varName));
+      final QuerySolution querySolution = resultSet.next();
+      final List<String> resultVars = resultSet.getResultVars();
+      final Map<String, RDFNode> result1 = new HashMap<>();
+      resultVars.forEach(var -> result1.put(var, querySolution.get(var)));
+      result.add(result1);
     }
 
     return result;

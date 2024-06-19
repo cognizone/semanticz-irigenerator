@@ -16,10 +16,7 @@ public class UriGeneratorRoot {
   public static UriGeneratorRoot load(InputStreamSource resource) {
     try {
       ObjectMapper mapper = Json5Light.getJson5Mapper();
-      UriGeneratorRoot result = mapper.readValue(resource.getInputStream(), UriGeneratorRoot.class);
-
-//      result.validate();
-      return result;
+      return mapper.readValue(resource.getInputStream(), UriGeneratorRoot.class);
     }
     catch (IOException e) {
       String extra = getPath(resource) != null ? " Path " + getPath(resource) : "";
@@ -29,8 +26,7 @@ public class UriGeneratorRoot {
 
   private static String getPath(InputStreamSource resource) {
     try {
-      if (resource instanceof Resource) {
-        Resource r = (Resource) resource;
+      if (resource instanceof Resource r) {
         return r.getFile().getPath();
       }
     }
