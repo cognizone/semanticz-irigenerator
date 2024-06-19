@@ -153,26 +153,6 @@ public class JenaUtils {
     });
   }
 
-  public static void closeQuietly(Iterable<Model> models) {
-    for (Model model : models) {
-      if (model == null) {
-        continue;
-      }
-
-      if (model.isClosed()) {
-        log.warn("Closing an already closed model.");
-        continue;
-      }
-
-      try {
-        model.close();
-      }
-      catch (Exception e) {
-        log.warn("Closing model failed.", e);
-      }
-    }
-  }
-
   public static Model readInto(File file, Model model) {
     return readInto(file, model, getLangByResourceName(file.getName()));
   }
