@@ -11,7 +11,7 @@ public class UriGeneratorResult {
 
   private UriGenerator generator;
   private Set<String> uris;
-  private Map<String, String> replacements = new HashMap<>();
+  private final Map<String, String> replacements = new HashMap<>();
 
   public UriGeneratorResult() {
   }
