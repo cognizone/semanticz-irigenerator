@@ -23,7 +23,11 @@ public class InternalRdfStoreService implements RdfStoreServiceAPI, Closeable {
   @Override
   public boolean executeAskQuery(Query query, QuerySolutionMap bindings) {
     return executeInLock(() -> {
-      try (QueryExecution queryExecution = QueryExecutionFactory.create(query, model, bindings)) {
+      try (QueryExecution queryExecution = QueryExecution.create()
+              .query(query)
+              .model(model)
+              .initialBinding(bindings)
+              .build()) {
         return queryExecution.execAsk();
       } catch (RuntimeException e) {
         log.error("Query failed: {}", query);
@@ -40,7 +44,11 @@ public class InternalRdfStoreService implements RdfStoreServiceAPI, Closeable {
               bindings,
               parsedQuery);
 
-      try (QueryExecution queryExecution = QueryExecutionFactory.create(parsedQuery, model, bindings)) {
+      try (QueryExecution queryExecution = QueryExecution.create()
+              .query(parsedQuery)
+              .model(model)
+              .initialBinding(bindings)
+              .build()) {
         ResultSet resultSet = queryExecution.execSelect();
         return resultSetHandler.handle(resultSet);
       } catch (RuntimeException e) {
@@ -53,7 +61,12 @@ public class InternalRdfStoreService implements RdfStoreServiceAPI, Closeable {
   public Model executeConstructQuery(String query) {
     Query parsedQuery = QueryFactory.create(query, Syntax.syntaxARQ);
     return executeInLock(() -> {
-      try (QueryExecution queryExecution = QueryExecutionFactory.create(parsedQuery, model, new QuerySolutionMap())) {
+
+      try (QueryExecution queryExecution = QueryExecution.create()
+              .query(parsedQuery)
+              .model(model)
+              .build()
+      ) {
         if (log.isTraceEnabled()) log.trace("Running construct query: \n{}", parsedQuery);
         return queryExecution.execConstruct();
       } catch (RuntimeException e) {
