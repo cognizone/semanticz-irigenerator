@@ -14,8 +14,8 @@ import org.springframework.core.io.Resource;
 import zone.cogni.asquare.cube.spel.TemplateService;
 import zone.cogni.asquare.cube.urigenerator.json.UriGenerator;
 import zone.cogni.asquare.cube.urigenerator.json.UriGeneratorRoot;
-import zone.cogni.asquare.triplestore.RdfStoreService;
-import zone.cogni.asquare.triplestore.jenamemory.InternalRdfStoreService;
+import zone.cogni.asquare.triplestore.RdfStoreServiceAPI;
+import zone.cogni.asquare.triplestore.InternalRdfStoreService;
 import zone.cogni.sem.jena.template.JenaQueryUtils;
 
 import jakarta.annotation.Nonnull;
@@ -49,7 +49,7 @@ public class UriGeneratorCalculator {
   }
 
   public Model convert(Model model, Map<String, String> context) {
-    RdfStoreService rdfStore = getRdfStore(model);
+    RdfStoreServiceAPI rdfStore = getRdfStore(model);
     List<UriGeneratorResult> results = getGeneratorResults(rdfStore);
 
     int replaceCount = inputValidations(model, results);
@@ -61,7 +61,7 @@ public class UriGeneratorCalculator {
   }
 
   @Nonnull
-  private List<UriGeneratorResult> getGeneratorResults(RdfStoreService rdfStore) {
+  private List<UriGeneratorResult> getGeneratorResults(RdfStoreServiceAPI rdfStore) {
     return uriGeneratorRoot.getGenerators()
                            .stream()
                            .map(generator -> getUriGeneratorResult(rdfStore, generator))
@@ -69,7 +69,7 @@ public class UriGeneratorCalculator {
   }
 
   @Nonnull
-  private UriGeneratorResult getUriGeneratorResult(RdfStoreService rdfStore, UriGenerator generator) {
+  private UriGeneratorResult getUriGeneratorResult(RdfStoreServiceAPI rdfStore, UriGenerator generator) {
     UriGeneratorResult uriGeneratorResult = new UriGeneratorResult();
     uriGeneratorResult.setGenerator(generator);
     uriGeneratorResult.setUris(getNewSelectorUris(rdfStore, generator));
@@ -106,7 +106,7 @@ public class UriGeneratorCalculator {
   }
 
   private void processReplacements(Model model,
-                                   RdfStoreService rdfStore,
+                                   RdfStoreServiceAPI rdfStore,
                                    int replaceCount,
                                    Map<String, String> context,
                                    List<UriGeneratorResult> results) {
@@ -126,7 +126,7 @@ public class UriGeneratorCalculator {
   }
 
   private int calculateReplacementUrisLoop(Model model,
-                                           RdfStoreService rdfStore,
+                                           RdfStoreServiceAPI rdfStore,
                                            Map<String, String> context,
                                            List<UriGeneratorResult> results) {
     AtomicInteger count = new AtomicInteger();
@@ -147,7 +147,7 @@ public class UriGeneratorCalculator {
     return count.get();
   }
 
-  private Optional<String> calculateNewUri(RdfStoreService rdfStore,
+  private Optional<String> calculateNewUri(RdfStoreServiceAPI rdfStore,
                                            Map<String, String> context,
                                            UriGeneratorResult result,
                                            String oldUri) {
@@ -185,7 +185,7 @@ public class UriGeneratorCalculator {
     return Optional.of(newUri);
   }
 
-  private void traceModel(RdfStoreService rdfStore) {
+  private void traceModel(RdfStoreServiceAPI rdfStore) {
     if (!log.isTraceEnabled()) return;
 
     Model trace = rdfStore.executeConstructQuery("construct {?s ?p ?o} where {?s ?p ?o}");
@@ -194,7 +194,7 @@ public class UriGeneratorCalculator {
     log.trace("model: {}", out);
   }
 
-  private boolean existsInModel(RdfStoreService rdfStore, String newUri) {
+  private boolean existsInModel(RdfStoreServiceAPI rdfStore, String newUri) {
     QuerySolutionMap querySolution = new QuerySolutionMap();
     querySolution.add("x", ResourceFactory.createResource(newUri));
 
@@ -206,7 +206,7 @@ public class UriGeneratorCalculator {
    * else a map of variables to be used in uri template!
    */
   private Optional<Map<String, String>> getQueryMap(Supplier<String> context,
-                                                    RdfStoreService rdfStore,
+                                                    RdfStoreServiceAPI rdfStore,
                                                     String variableQuery) {
     List<Map<String, RDFNode>> rows = queryForListOfMaps(rdfStore, variableQuery);
     if (rows.size() != 1)
@@ -232,7 +232,7 @@ public class UriGeneratorCalculator {
     if (node == null) throw new RuntimeException("variableSelector result has some null values: " + nodeMap);
   }
 
-  private List<Map<String, RDFNode>> queryForListOfMaps(RdfStoreService rdfStore, String variableQuery) {
+  private List<Map<String, RDFNode>> queryForListOfMaps(RdfStoreServiceAPI rdfStore, String variableQuery) {
     try {
       return rdfStore.executeSelectQuery(variableQuery, JenaQueryUtils::convertToListOfMaps);
     }
@@ -241,7 +241,7 @@ public class UriGeneratorCalculator {
     }
   }
 
-  private Set<String> getNewSelectorUris(RdfStoreService rdfStore, UriGenerator generator) {
+  private Set<String> getNewSelectorUris(RdfStoreServiceAPI rdfStore, UriGenerator generator) {
     String query = uriGeneratorRoot.getPrefixQuery() + generator.getFullUriSelector();
     List<String> uris = getUris(rdfStore, query);
     return uris.stream()
@@ -249,7 +249,7 @@ public class UriGeneratorCalculator {
                .collect(Collectors.toSet());
   }
 
-  private List<String> getUris(RdfStoreService rdfStore, String query) {
+  private List<String> getUris(RdfStoreServiceAPI rdfStore, String query) {
     try {
       return rdfStore.executeSelectQuery(query, UriGeneratorCalculator::convertToList);
     }
@@ -268,7 +268,7 @@ public class UriGeneratorCalculator {
     return result;
   }
 
-  private RdfStoreService getRdfStore(Model model) {
+  private RdfStoreServiceAPI getRdfStore(Model model) {
     return new InternalRdfStoreService(model);
   }
 
