@@ -1,5 +1,4 @@
 val jenaVersion = "4.1.0"
-val asquareVersion = "0.7.0"
 val springVersion = "6.1.9"
 val springBootVersion = "2.7.18"
 val jakartaAnnotationApiVersion = "3.0.0"
