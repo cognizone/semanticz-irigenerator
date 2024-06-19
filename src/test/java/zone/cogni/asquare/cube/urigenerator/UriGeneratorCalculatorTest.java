@@ -2,29 +2,40 @@ package zone.cogni.asquare.cube.urigenerator;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.riot.RDFDataMgr;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import zone.cogni.sem.jena.JenaUtils;
+import zone.cogni.asquare.cube.spel.SpelService;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.net.URL;
 
-@SpringBootTest(classes = UriGeneratorCalculatorTestConfig.class)
 public class UriGeneratorCalculatorTest {
 
-  @Autowired
-  UriGeneratorCalculator uriCalculator;
+  UriGeneratorCalculator sut;
+
+  @BeforeEach
+  public void init() {
+    final URL uriGeneratorsResource = getClass().getResource("/urigenerator/uri-generators.json5");
+    sut = new UriGeneratorCalculator("http://resource",
+            new SpelService(),
+            uriGeneratorsResource);
+  }
 
   @Test
   public void test_uris_converted() {
+    final URL modelUrl = getClass().getResource("/urigenerator/model.ttl");
+    assert modelUrl != null;
+
     //given
-    Model model = JenaUtils.read(new ClassPathResource("urigenerator/model.ttl"));
+    final Model model = ModelFactory.createDefaultModel();
+    RDFDataMgr.read(model, modelUrl.toString());
     //when
-    Model converted = uriCalculator.convert(model, ImmutableMap.of("baseUri", "http://asquare.cogni.zone"));
+    final Model converted = sut.convert(model, ImmutableMap.of("baseUri", "http://asquare.cogni.zone"));
     //then
-    assertThat(converted.containsResource(ResourceFactory.createResource("http://asquare.cogni.zone/5")));
-    assertThat(converted.containsResource(ResourceFactory.createResource("http://asquare.cogni.zone/2021/0005")));
+    Assertions.assertTrue(converted.containsResource(ResourceFactory.createResource("http://asquare.cogni.zone/5")));
+    Assertions.assertTrue(converted.containsResource(ResourceFactory.createResource("http://asquare.cogni.zone/2021/0005")));
   }
 }
