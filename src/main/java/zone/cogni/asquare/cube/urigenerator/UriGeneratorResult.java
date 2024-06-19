@@ -32,14 +32,6 @@ public class UriGeneratorResult {
     this.uris = uris;
   }
 
-  public Map<String, String> getReplacements() {
-    return replacements;
-  }
-
-  public void setReplacements(Map<String, String> replacements) {
-    this.replacements = replacements;
-  }
-
   public boolean alreadyReplaced(String oldUri) {
     return replacements.containsKey(oldUri);
   }

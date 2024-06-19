@@ -20,11 +20,11 @@ repositories {
 dependencies {
     implementation("org.apache.jena:jena-arq:$jenaVersion")
     implementation("com.google.guava:guava:$guavaVersion")
-    implementation("org.springframework:spring-core:$springVersion")
-    implementation("org.springframework:spring-context:$springVersion")
     implementation("org.springframework:spring-expression:$springVersion")
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
 
+    testImplementation("org.springframework:spring-core:$springVersion")
+    testImplementation("org.springframework:spring-context:$springVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 }
 
