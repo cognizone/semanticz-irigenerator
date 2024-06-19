@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 public class UriGeneratorCalculator {
   private static final Logger log = LoggerFactory.getLogger(UriGeneratorCalculator.class);
+  public static final int EXPECTED_ROW_COUNT = 1;
 
   private final String newUriPrefix;
   private final TemplateService templateService;
@@ -51,15 +52,19 @@ public class UriGeneratorCalculator {
   }
 
   public Model convert(Model model, Map<String, String> context) {
-    RdfStoreServiceAPI rdfStore = getRdfStore(model);
-    List<UriGeneratorResult> results = getGeneratorResults(rdfStore);
+    try {
+      final RdfStoreServiceAPI rdfStore = getRdfStore(model);
+      final List<UriGeneratorResult> results = getGeneratorResults(rdfStore);
 
-    int replaceCount = inputValidations(model, results);
-    processReplacements(model, rdfStore, replaceCount, context, results);
+      int replaceCount = inputValidations(model, results);
+      processReplacements(model, rdfStore, replaceCount, context, results);
 
-    validate(model);
+      validate(model);
 
-    return model;
+      return model;
+    } catch(RuntimeException e) {
+      throw new RuntimeException("An error occurred during URI generation", e);
+    }
   }
 
   @Nonnull
@@ -81,11 +86,11 @@ public class UriGeneratorCalculator {
   /**
    * @return number of uris to be replaces
    */
-  private int inputValidations(Model model, List<UriGeneratorResult> results) {
-    Set<String> incomingUris = getProblemUris(model);
+  private int inputValidations(final Model model, final List<UriGeneratorResult> results) {
+    final Set<String> incomingUris = getProblemUris(model);
 
-    Set<String> selectedUris = new HashSet<>();
-    Set<String> duplicates = results.stream()
+    final Set<String> selectedUris = new HashSet<>();
+    final Set<String> duplicates = results.stream()
             .flatMap(result -> result.getUris().stream())
             .filter(uri -> !selectedUris.add(uri))
             .collect(Collectors.toSet());
@@ -93,25 +98,24 @@ public class UriGeneratorCalculator {
     if (!duplicates.isEmpty())
       log.error("some uris matched multiple selectors: {}", duplicates);
 
-    int size = incomingUris.size();
+    final int size = incomingUris.size();
     if (size != selectedUris.size())
       log.error("incoming uris and selected uris do not match up." +
-                "\n\t incoming: {}" +
-                "\n\t selected: {}", incomingUris, selectedUris);
+              "\n\t incoming: {}" +
+              "\n\t selected: {}", incomingUris, selectedUris);
 
     if (!duplicates.isEmpty() || size != selectedUris.size())
       throw new RuntimeException("some validations failed when converting new uris, check logs for more info");
-
 
     log.info("(uri generator) replacing {} uris", size);
     return size;
   }
 
-  private void processReplacements(Model model,
-                                   RdfStoreServiceAPI rdfStore,
+  private void processReplacements(final Model model,
+                                   final RdfStoreServiceAPI rdfStore,
                                    int replaceCount,
-                                   Map<String, String> context,
-                                   List<UriGeneratorResult> results) {
+                                   final Map<String, String> context,
+                                   final List<UriGeneratorResult> results) {
     int loopCount = 0;
     while (true) {
       int count = calculateReplacementUrisLoop(model, rdfStore, context, results);
@@ -127,16 +131,16 @@ public class UriGeneratorCalculator {
     }
   }
 
-  private int calculateReplacementUrisLoop(Model model,
-                                           RdfStoreServiceAPI rdfStore,
-                                           Map<String, String> context,
-                                           List<UriGeneratorResult> results) {
-    AtomicInteger count = new AtomicInteger();
+  private int calculateReplacementUrisLoop(final Model model,
+                                           final RdfStoreServiceAPI rdfStore,
+                                           final Map<String, String> context,
+                                           final List<UriGeneratorResult> results) {
+    final AtomicInteger count = new AtomicInteger();
 
     results.forEach(result -> result.getUris().forEach(uri -> {
       if (result.alreadyReplaced(uri)) return;
 
-      Optional<String> possibleNewUri = calculateNewUri(rdfStore, context, result, uri);
+      final Optional<String> possibleNewUri = calculateNewUri(rdfStore, context, result, uri);
       if (possibleNewUri.isPresent()) {
         count.addAndGet(1);
         result.addReplacement(uri, possibleNewUri.get());
@@ -147,37 +151,37 @@ public class UriGeneratorCalculator {
     return count.get();
   }
 
-  private Optional<String> calculateNewUri(RdfStoreServiceAPI rdfStore,
-                                           Map<String, String> context,
-                                           UriGeneratorResult result,
-                                           String oldUri) {
+  private Optional<String> calculateNewUri(final RdfStoreServiceAPI rdfStore,
+                                           final Map<String, String> context,
+                                           final UriGeneratorResult result,
+                                           final String oldUri) {
     if (log.isTraceEnabled()) log.trace("calculate new uri for {}", oldUri);
     traceModel(rdfStore);
 
-    Map<String, String> variables = new HashMap<>(context);
+    final Map<String, String> variables = new HashMap<>(context);
     variables.put("uri", oldUri);
 
     // variable template can also NOT exist: then this step is skipped!
-    String variableSelector = result.getGenerator().getFullVariableSelector();
+    final String variableSelector = result.getGenerator().getFullVariableSelector();
     if (StringUtils.isNotBlank(variableSelector)) {
-      String variableTemplateQuery = uriGeneratorRoot.getPrefixQuery() + variableSelector;
-      String variableQuery = templateService.processTemplate(variableTemplateQuery, variables);
+      final String variableTemplateQuery = uriGeneratorRoot.getPrefixQuery() + variableSelector;
+      final String variableQuery = templateService.processTemplate(variableTemplateQuery, variables);
       if (log.isTraceEnabled()) log.trace("query: {}", variableQuery);
 
-      Supplier<String> contextSupplier = () -> result.getGenerator().getId();
-      Optional<Map<String, String>> variableMap = getQueryMap(contextSupplier, rdfStore, variableQuery);
+      final Supplier<String> contextSupplier = () -> result.getGenerator().getId();
+      final Optional<Map<String, String>> variableMap = getQueryMap(contextSupplier, rdfStore, variableQuery);
 
       // if one of template variables is still a new URI we should skip calculation for now
       if (variableMap.isEmpty()) return Optional.empty();
 
-      Map<String, String> map = variableMap.get();
+      final Map<String, String> map = variableMap.get();
       if (log.isTraceEnabled()) log.trace("query result: {}", map);
       variables.putAll(map);
     }
     if (log.isTraceEnabled()) log.debug("variables: {}", variables);
 
-    String uriTemplate = result.getGenerator().getUriTemplate();
-    String newUri = templateService.processTemplate(uriTemplate, variables);
+    final String uriTemplate = result.getGenerator().getUriTemplate();
+    final String newUri = templateService.processTemplate(uriTemplate, variables);
 
     if (existsInModel(rdfStore, newUri))
       throw new RuntimeException("uri overlap found for " + newUri);
@@ -188,14 +192,14 @@ public class UriGeneratorCalculator {
   private void traceModel(RdfStoreServiceAPI rdfStore) {
     if (!log.isTraceEnabled()) return;
 
-    Model trace = rdfStore.executeConstructQuery("construct {?s ?p ?o} where {?s ?p ?o}");
-    StringWriter out = new StringWriter();
+    final Model trace = rdfStore.executeConstructQuery("construct {?s ?p ?o} where {?s ?p ?o}");
+    final StringWriter out = new StringWriter();
     trace.write(out, "ttl");
     log.trace("model: {}", out);
   }
 
   private boolean existsInModel(RdfStoreServiceAPI rdfStore, String newUri) {
-    QuerySolutionMap querySolution = new QuerySolutionMap();
+    final QuerySolutionMap querySolution = new QuerySolutionMap();
     querySolution.add("x", ResourceFactory.createResource(newUri));
 
     return rdfStore.executeAskQuery(preparedStatements.get("exists-uri"), querySolution);
@@ -208,11 +212,11 @@ public class UriGeneratorCalculator {
   private Optional<Map<String, String>> getQueryMap(Supplier<String> context,
                                                     RdfStoreServiceAPI rdfStore,
                                                     String variableQuery) {
-    List<Map<String, RDFNode>> rows = queryForListOfMaps(rdfStore, variableQuery);
-    if (rows.size() != 1)
-      throw new RuntimeException("[" + context.get() + "] expected 1 row, found " + rows);
+    final List<Map<String, RDFNode>> result1 = rdfStore.executeSelectQuery(variableQuery, JenaQueryUtils::convertToListOfMaps);
+    if (result1.size() != EXPECTED_ROW_COUNT)
+      throw new RuntimeException("[" + context.get() + "] expected 1 row, found " + result1);
 
-    Map<String, RDFNode> nodeMap = rows.get(0);
+    final Map<String, RDFNode> nodeMap = result1.get(0);
     boolean isBadMatch = nodeMap.values()
             .stream()
             .peek(node -> nonNullCheck(nodeMap, node))
@@ -220,7 +224,7 @@ public class UriGeneratorCalculator {
                     && node.asResource().getURI().startsWith(newUriPrefix));
     if (isBadMatch) return Optional.empty();
 
-    Map<String, String> result = new HashMap<>();
+    final Map<String, String> result = new HashMap<>();
     nodeMap.forEach((k, v) -> result.put(k, (v.isResource() ? v.asResource().getURI() : v.asLiteral().getString())));
 
     return Optional.of(result);
@@ -230,28 +234,12 @@ public class UriGeneratorCalculator {
     if (node == null) throw new RuntimeException("variableSelector result has some null values: " + nodeMap);
   }
 
-  private List<Map<String, RDFNode>> queryForListOfMaps(RdfStoreServiceAPI rdfStore, String variableQuery) {
-    try {
-      return rdfStore.executeSelectQuery(variableQuery, JenaQueryUtils::convertToListOfMaps);
-    } catch (RuntimeException e) {
-      throw new RuntimeException("Query failed: \n" + variableQuery, e);
-    }
-  }
-
   private Set<String> getNewSelectorUris(RdfStoreServiceAPI rdfStore, UriGenerator generator) {
-    String query = uriGeneratorRoot.getPrefixQuery() + generator.getFullUriSelector();
-    List<String> uris = getUris(rdfStore, query);
-    return uris.stream()
+    final String query = uriGeneratorRoot.getPrefixQuery() + generator.getFullUriSelector();
+    return rdfStore
+            .executeSelectQuery(query, UriGeneratorCalculator::convertToList).stream()
             .filter(uri -> uri.startsWith(newUriPrefix))
             .collect(Collectors.toSet());
-  }
-
-  private List<String> getUris(RdfStoreServiceAPI rdfStore, String query) {
-    try {
-      return rdfStore.executeSelectQuery(query, UriGeneratorCalculator::convertToList);
-    } catch (RuntimeException e) {
-      throw new RuntimeException("problem with query: \n" + query, e);
-    }
   }
 
   private static List<String> convertToList(ResultSet resultSet) {
