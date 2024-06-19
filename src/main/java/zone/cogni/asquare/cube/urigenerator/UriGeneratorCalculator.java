@@ -18,7 +18,7 @@ import zone.cogni.asquare.triplestore.RdfStoreService;
 import zone.cogni.asquare.triplestore.jenamemory.InternalRdfStoreService;
 import zone.cogni.sem.jena.template.JenaResultSetHandlers;
 
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import java.io.StringWriter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
