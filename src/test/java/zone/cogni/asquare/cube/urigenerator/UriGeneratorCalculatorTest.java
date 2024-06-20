@@ -6,7 +6,6 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.riot.RDFDataMgr;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import zone.cogni.asquare.cube.spel.SpelService;
 
@@ -14,18 +13,25 @@ import java.net.URL;
 
 public class UriGeneratorCalculatorTest {
 
-  UriGeneratorCalculator sut;
 
-  @BeforeEach
-  public void init() {
-    final URL uriGeneratorsResource = getClass().getResource("/urigenerator/uri-generators.json5");
-    sut = new UriGeneratorCalculator("http://resource",
-            new SpelService(),
-            uriGeneratorsResource);
+  @Test
+  public void testURIConvertedForJsonLD11() {
+    testURIConvertedForSyntax("/urigenerator/uri-generators.json", Format.JSONLD11);
   }
 
   @Test
-  public void test_uris_converted() {
+  public void testURIConvertedForJson5() {
+    testURIConvertedForSyntax("/urigenerator/uri-generators.json5", Format.JSON5);
+  }
+
+  private void testURIConvertedForSyntax(String generatorsResource, Format format) {
+    final URL uriGeneratorsResource = getClass().getResource(generatorsResource);
+
+    final UriGeneratorCalculator sut = new UriGeneratorCalculator("http://resource",
+            new SpelService(),
+            uriGeneratorsResource,
+            format);
+
     final URL modelUrl = getClass().getResource("/urigenerator/model.ttl");
     assert modelUrl != null;
 
