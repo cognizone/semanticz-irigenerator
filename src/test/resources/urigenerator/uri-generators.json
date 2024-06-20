@@ -1,0 +1,19 @@
+{
+  "@context": "file:/home/psiotwo/soft/cognizone/irigenerator/src/main/resources/context.json",
+  "prefixes": {
+    "prefix-name": "demo",
+    "namespace": "http://demo.com/model#"
+  },
+  "generators": [
+    {
+      "uriSelector": "select ?uri { ?uri a demo:One }",
+      "variableSelector": "select ?id where { <#{[uri]}> demo:id ?id }",
+      "uriTemplate": "#{[baseUri]}/#{[id]}"
+    },
+    {
+      "uriSelector": "select ?uri { ?uri a demo:Two }",
+      "variableSelector": "select ?year ?sequence where { <#{[uri]}> demo:year ?year ; demo:sequence ?sequence}",
+      "uriTemplate": "#{[baseUri]}/#{[year]}/#{[sequence]}"
+    }
+  ]
+}

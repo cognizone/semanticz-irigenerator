@@ -39,11 +39,12 @@ public class UriGeneratorCalculator {
   public UriGeneratorCalculator(
           String newUriPrefix,
           TemplateService templateService,
-          URL uriGeneratorRootResource
+          URL uriGeneratorRootResource,
+          Format format
   ) {
     this.newUriPrefix = newUriPrefix;
     this.templateService = templateService;
-    this.uriGeneratorRoot = UriGeneratorRoot.load(uriGeneratorRootResource);
+    this.uriGeneratorRoot = Utils.load(uriGeneratorRootResource, format);
     initPreparedStatements();
   }
 
