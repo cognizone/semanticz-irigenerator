@@ -1,0 +1,27 @@
+{
+  "@context": {
+    "uri": "@id",
+    "types": "@type",
+    "prefixes": {
+      "@id": "https://data.cogni.zone/voc/irigenerator/prefix",
+      "@type": "https://data.cogni.zone/voc/irigenerator/prefix-class",
+      "@context": {
+        "uri": "@id",
+        "types": "@type",
+        "prefix-name": "https://data.cogni.zone/voc/irigenerator/prefix-name",
+        "namespace": "https://data.cogni.zone/voc/irigenerator/namespace"
+      }
+    },
+    "generators": {
+      "@id": "https://data.cogni.zone/voc/irigenerator/generator",
+      "@type": "https://data.cogni.zone/voc/irigenerator/iri-generator",
+      "@context": {
+        "uri": "@id",
+        "types": "@type",
+        "uriSelector": "https://data.cogni.zone/voc/irigenerator/iri-selector",
+        "variableSelector": "https://data.cogni.zone/voc/irigenerator/variable-selector",
+        "uriTemplate": "https://data.cogni.zone/voc/irigenerator/iri-template"
+      }
+    }
+  }
+}

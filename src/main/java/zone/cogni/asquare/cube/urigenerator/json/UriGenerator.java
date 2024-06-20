@@ -1,46 +1,26 @@
 package zone.cogni.asquare.cube.urigenerator.json;
 
+import cz.cvut.kbss.jopa.model.annotations.Id;
+import cz.cvut.kbss.jopa.model.annotations.OWLClass;
+import cz.cvut.kbss.jopa.model.annotations.OWLDataProperty;
+import lombok.Data;
+import zone.cogni.asquare.cube.urigenerator.Vocabulary;
+
+@Data
+@OWLClass(iri = Vocabulary.C_IRI_GENERATOR)
 public class UriGenerator {
 
+  @Id
   private String id;
+
+  @OWLDataProperty(iri = Vocabulary.P_IRI_SELECTOR)
   private String uriSelector;
+
+  @OWLDataProperty(iri = Vocabulary.P_VARIABLE_SELECTOR)
   private String variableSelector;
+
+  @OWLDataProperty(iri = Vocabulary.P_IRI_TEMPLATE)
   private String uriTemplate;
-
-  public UriGenerator() {
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getUriSelector() {
-    return uriSelector;
-  }
-
-  public void setUriSelector(String uriSelector) {
-    this.uriSelector = uriSelector;
-  }
-
-  public String getVariableSelector() {
-    return variableSelector;
-  }
-
-  public void setVariableSelector(String variableSelector) {
-    this.variableSelector = variableSelector;
-  }
-
-  public String getUriTemplate() {
-    return uriTemplate;
-  }
-
-  public void setUriTemplate(String uriTemplate) {
-    this.uriTemplate = uriTemplate;
-  }
 
   public String getFullUriSelector() {
     if (uriSelector == null) return "";

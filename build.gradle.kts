@@ -3,11 +3,13 @@ val springVersion = "5.3.+"
 val jakartaAnnotationApiVersion = "3.0.0"
 val guavaVersion = "33.2.1-jre"
 val jupiterVersion = "5.10.2"
+val jb4jsonldJacksonVersion = "0.14.3"
 
 plugins {
     `java-library`
     pmd
     jacoco
+    id("io.freefair.lombok") version "8.6"
     id("org.owasp.dependencycheck") version "9.2.0"
 }
 
@@ -41,6 +43,7 @@ dependencies {
     implementation("com.google.guava:guava:$guavaVersion")
     implementation("org.springframework:spring-expression:$springVersion")
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
+    implementation("cz.cvut.kbss.jsonld:jb4jsonld-jackson:$jb4jsonldJacksonVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
