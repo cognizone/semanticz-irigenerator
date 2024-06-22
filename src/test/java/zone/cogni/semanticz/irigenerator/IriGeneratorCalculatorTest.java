@@ -1,4 +1,4 @@
-package zone.cogni.asquare.cube.urigenerator;
+package zone.cogni.semanticz.irigenerator;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.jena.rdf.model.Model;
@@ -11,28 +11,28 @@ import zone.cogni.asquare.cube.spel.SpelService;
 
 import java.net.URL;
 
-public class UriGeneratorCalculatorTest {
+public class IriGeneratorCalculatorTest {
 
 
   @Test
   public void testURIConvertedForJsonLD11() {
-    testURIConvertedForSyntax("/urigenerator/uri-generators.json", Format.JSONLD11);
+    testURIConvertedForSyntax("/irigenerator/uri-generators.json", Format.JSONLD11);
   }
 
   @Test
   public void testURIConvertedForJson5() {
-    testURIConvertedForSyntax("/urigenerator/uri-generators.json5", Format.JSON5);
+    testURIConvertedForSyntax("/irigenerator/uri-generators.json5", Format.JSON5);
   }
 
   private void testURIConvertedForSyntax(String generatorsResource, Format format) {
     final URL uriGeneratorsResource = getClass().getResource(generatorsResource);
 
-    final UriGeneratorCalculator sut = new UriGeneratorCalculator("http://resource",
+    final IriGeneratorCalculator sut = new IriGeneratorCalculator("http://resource",
             new SpelService(),
             uriGeneratorsResource,
             format);
 
-    final URL modelUrl = getClass().getResource("/urigenerator/model.ttl");
+    final URL modelUrl = getClass().getResource("/irigenerator/model.ttl");
     assert modelUrl != null;
 
     //given

@@ -1,11 +1,11 @@
-package zone.cogni.asquare.cube.urigenerator.json;
+package zone.cogni.semanticz.irigenerator.json;
 
 import cz.cvut.kbss.jopa.model.annotations.Id;
 import cz.cvut.kbss.jopa.model.annotations.OWLClass;
 import cz.cvut.kbss.jopa.model.annotations.OWLDataProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import zone.cogni.asquare.cube.urigenerator.Vocabulary;
+import zone.cogni.semanticz.irigenerator.Vocabulary;
 
 import java.net.URI;
 

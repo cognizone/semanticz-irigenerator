@@ -1,11 +1,11 @@
-package zone.cogni.asquare.cube.urigenerator;
+package zone.cogni.semanticz.irigenerator;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import zone.cogni.asquare.cube.urigenerator.json.Prefix;
+import zone.cogni.semanticz.irigenerator.json.Prefix;
 
 import java.io.IOException;
 import java.util.ArrayList;
