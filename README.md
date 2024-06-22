@@ -30,3 +30,9 @@ To pick the correct template for the given IRI another SPARQL query is used:
 PREFIX demo: <http://demo.com/model#> .
 SELECT ?uri { ?uri a demo:Two }
 ```
+
+## Dependencies
+The project has been extracted from [Asquare](https://github.com/cognizone/asquare) and the following classes are either copies of subset of their respective Asquare counterparts:
+- [Json5Light.java](src%2Fmain%2Fjava%2Fzone%2Fcogni%2Fasquare%2Fcube%2Fjson5%2FJson5Light.java)
+- [SpelService.java](src%2Fmain%2Fjava%2Fzone%2Fcogni%2Fasquare%2Fcube%2Fspel%2FSpelService.java)
+- [TemplateService.java](src%2Fmain%2Fjava%2Fzone%2Fcogni%2Fasquare%2Fcube%2Fspel%2FTemplateService.java)
