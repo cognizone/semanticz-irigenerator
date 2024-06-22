@@ -1,9 +1,9 @@
 {
   "@context": "file:/home/psiotwo/soft/cognizone/irigenerator/src/main/resources/context.json",
-  "prefixes": {
+  "prefixes": [{
     "prefix-name": "demo",
     "namespace": "http://demo.com/model#"
-  },
+  }],
   "generators": [
     {
       "uriSelector": "select ?uri { ?uri a demo:One }",
