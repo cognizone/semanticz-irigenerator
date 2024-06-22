@@ -1,10 +1,10 @@
-package zone.cogni.asquare.cube.urigenerator;
+package zone.cogni.semanticz.irigenerator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import zone.cogni.asquare.cube.json5.Json5Light;
-import zone.cogni.asquare.cube.urigenerator.json.Prefix;
-import zone.cogni.asquare.cube.urigenerator.json.UriGeneratorRoot;
+import zone.cogni.semanticz.irigenerator.json.Prefix;
+import zone.cogni.semanticz.irigenerator.json.IriGeneratorSpecification;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,10 +20,10 @@ public class Utils {
    * @param format format of data that dwell at the URL
    * @return the Java object
    */
-  public static UriGeneratorRoot load(URL resource, Format format) {
+  public static IriGeneratorSpecification load(URL resource, Format format) {
     try {
       ObjectMapper mapper = format.equals(Format.JSON5) ? Json5Light.getJson5Mapper() : JsonLdObjectMapperFactory.getJsonLdMapper();
-      return mapper.readValue(resource.openStream(), UriGeneratorRoot.class);
+      return mapper.readValue(resource.openStream(), IriGeneratorSpecification.class);
     } catch (IOException e) {
       throw new RuntimeException("Unable to load uri generator configuration." + resource, e);
     }

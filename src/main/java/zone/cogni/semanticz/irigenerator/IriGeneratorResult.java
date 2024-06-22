@@ -1,26 +1,26 @@
-package zone.cogni.asquare.cube.urigenerator;
+package zone.cogni.semanticz.irigenerator;
 
 
-import zone.cogni.asquare.cube.urigenerator.json.UriGenerator;
+import zone.cogni.semanticz.irigenerator.json.IriGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class UriGeneratorResult {
+public class IriGeneratorResult {
 
-  private UriGenerator generator;
+  private IriGenerator generator;
   private Set<String> uris;
   private final Map<String, String> replacements = new HashMap<>();
 
-  public UriGeneratorResult() {
+  public IriGeneratorResult() {
   }
 
-  public UriGenerator getGenerator() {
+  public IriGenerator getGenerator() {
     return generator;
   }
 
-  public void setGenerator(UriGenerator generator) {
+  public void setGenerator(IriGenerator generator) {
     this.generator = generator;
   }
 
