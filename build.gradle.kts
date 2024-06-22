@@ -4,6 +4,7 @@ val jakartaAnnotationApiVersion = "3.0.0"
 val guavaVersion = "33.2.1-jre"
 val jupiterVersion = "5.10.2"
 val jb4jsonldJacksonVersion = "0.14.3"
+val logbackVersion = "1.5.6"
 
 plugins {
     `java-library`
@@ -45,6 +46,7 @@ dependencies {
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
     implementation("cz.cvut.kbss.jsonld:jb4jsonld-jackson:$jb4jsonldJacksonVersion")
 
+    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
