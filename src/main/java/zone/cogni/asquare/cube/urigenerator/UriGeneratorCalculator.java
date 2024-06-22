@@ -63,7 +63,7 @@ public class UriGeneratorCalculator {
       validate(model);
 
       return model;
-    } catch(RuntimeException e) {
+    } catch (RuntimeException e) {
       throw new RuntimeException("An error occurred during URI generation", e);
     }
   }
@@ -163,9 +163,9 @@ public class UriGeneratorCalculator {
     variables.put("uri", oldUri);
 
     // variable template can also NOT exist: then this step is skipped!
-    final String variableSelector = result.getGenerator().getFullVariableSelector();
+    final String variableSelector = result.getGenerator().getVariableSelector();
     if (StringUtils.isNotBlank(variableSelector)) {
-      final String variableTemplateQuery = uriGeneratorRoot.getPrefixQuery() + variableSelector;
+      final String variableTemplateQuery = Utils.getPrefixQuery(uriGeneratorRoot.getPrefixes()) + variableSelector;
       final String variableQuery = templateService.processTemplate(variableTemplateQuery, variables);
       if (log.isTraceEnabled()) log.trace("query: {}", variableQuery);
 
@@ -236,7 +236,7 @@ public class UriGeneratorCalculator {
   }
 
   private Set<String> getNewSelectorUris(RdfStoreServiceAPI rdfStore, UriGenerator generator) {
-    final String query = uriGeneratorRoot.getPrefixQuery() + generator.getFullUriSelector();
+    final String query = Utils.getPrefixQuery(uriGeneratorRoot.getPrefixes()) + generator.getUriSelector();
     return rdfStore
             .executeSelectQuery(query, UriGeneratorCalculator::convertToList).stream()
             .filter(uri -> uri.startsWith(newUriPrefix))
