@@ -16,12 +16,12 @@ public class IriGeneratorCalculatorTest {
 
   @Test
   public void testURIConvertedForJsonLD11() {
-    testURIConvertedForSyntax("/irigenerator/uri-generators.json", Format.JSONLD11);
+    testURIConvertedForSyntax("/irigenerator/demo/uri-generators.json", Format.JSONLD11);
   }
 
   @Test
   public void testURIConvertedForJson5() {
-    testURIConvertedForSyntax("/irigenerator/uri-generators.json5", Format.JSON5);
+    testURIConvertedForSyntax("/irigenerator/demo/uri-generators.json5", Format.JSON5);
   }
 
   private void testURIConvertedForSyntax(String generatorsResource, Format format) {
@@ -32,7 +32,7 @@ public class IriGeneratorCalculatorTest {
             uriGeneratorsResource,
             format);
 
-    final URL modelUrl = getClass().getResource("/irigenerator/model.ttl");
+    final URL modelUrl = getClass().getResource("/irigenerator/demo/model.ttl");
     assert modelUrl != null;
 
     //given
