@@ -1,0 +1,8 @@
+@prefix demo: <http://demo.com/model#> .
+
+<http://asquare.cogni.zone/5> a demo:One ;
+                    demo:id "5" .
+
+<http://asquare.cogni.zone/2021/0005> a demo:Two ;
+                    demo:year "2021" ;
+                    demo:sequence "0005" .
