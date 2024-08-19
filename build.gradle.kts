@@ -48,6 +48,7 @@ dependencies {
 
     testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$jupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
