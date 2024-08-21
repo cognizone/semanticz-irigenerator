@@ -33,7 +33,6 @@ import java.util.List;
 
 /**
  * Deserializes the map of prefixes into Java POJOs.
- *
  * TODO: note that this is here only to ensure compliance of the new data model with the original JSON5 serialization.
  */
 public class PrefixDeserializer extends JsonDeserializer<List<Prefix>> {

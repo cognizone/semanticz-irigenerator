@@ -20,6 +20,8 @@
 package zone.cogni.semanticz.irigenerator;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import zone.cogni.semanticz.irigenerator.json.IriGenerator;
 
 import java.util.HashMap;
@@ -28,27 +30,15 @@ import java.util.Set;
 
 public class IriGeneratorResult {
 
+  @Setter
+  @Getter
   private IriGenerator generator;
+  @Setter
+  @Getter
   private Set<String> uris;
   private final Map<String, String> replacements = new HashMap<>();
 
   public IriGeneratorResult() {
-  }
-
-  public IriGenerator getGenerator() {
-    return generator;
-  }
-
-  public void setGenerator(IriGenerator generator) {
-    this.generator = generator;
-  }
-
-  public Set<String> getUris() {
-    return uris;
-  }
-
-  public void setUris(Set<String> uris) {
-    this.uris = uris;
   }
 
   public boolean alreadyReplaced(String oldUri) {
