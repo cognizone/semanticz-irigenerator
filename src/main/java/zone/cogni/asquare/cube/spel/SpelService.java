@@ -41,7 +41,7 @@ public class SpelService implements TemplateService {
   }
 
   /**
-   * According to stackoverflow https://stackoverflow.com/a/16775689/328808
+   * According to stackoverflow <a href="https://stackoverflow.com/a/16775689/328808">...</a>
    * Expression instances are threadsafe, so we can cache them.
    */
   private Expression getExpression(String template) {
