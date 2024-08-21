@@ -1,18 +1,44 @@
 {
-  "@context": "file:/home/psiotwo/soft/cognizone/irigenerator/src/main/resources/context.json",
-  "prefixes": {
-    "prefix-name": "demo",
-    "namespace": "http://demo.com/model#"
+  "@context": {
+    "@version": 1.1,
+    "irigenerator": "https://data.cogni.zone/voc/irigenerator/",
+    "uri": "@id",
+    "types": "@type",
+    "prefixes": {
+      "@id": "irigenerator:prefix",
+      "@type": "irigenerator:prefix-class",
+      "@context": {
+        "uri": "@id",
+        "types": "@type",
+        "prefix-name": "irigenerator:prefix-name",
+        "namespace": "irigenerator:namespace"
+      }
+    },
+    "generators": {
+      "@id": "irigenerator:generator",
+      "@type": "irigenerator:iri-generator",
+      "@context": {
+        "uri": "@id",
+        "types": "@type",
+        "uriSelector": "irigenerator:iri-selector",
+        "variableSelector": "irigenerator:variable-selector",
+        "uriTemplate": "irigenerator:iri-template"
+      }
+    }
   },
+  "prefixes": [{
+    "prefix-name": "eczm",
+    "namespace": "https://example.cogni.zone/model#"
+  }],
   "generators": [
     {
-      "uriSelector": "select ?uri { ?uri a demo:One }",
-      "variableSelector": "select ?id where { <#{[uri]}> demo:id ?id }",
+      "uriSelector": "select ?uri { ?uri a eczm:One }",
+      "variableSelector": "select ?id where { <#{[uri]}> eczm:id ?id }",
       "uriTemplate": "#{[baseUri]}/#{[id]}"
     },
     {
-      "uriSelector": "select ?uri { ?uri a demo:Two }",
-      "variableSelector": "select ?year ?sequence where { <#{[uri]}> demo:year ?year ; demo:sequence ?sequence}",
+      "uriSelector": "select ?uri { ?uri a eczm:Two }",
+      "variableSelector": "select ?year ?sequence where { <#{[uri]}> eczm:year ?year ; eczm:sequence ?sequence}",
       "uriTemplate": "#{[baseUri]}/#{[year]}/#{[sequence]}"
     }
   ]
