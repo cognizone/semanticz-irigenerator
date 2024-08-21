@@ -19,7 +19,7 @@ public class IriGeneratorCalculatorTest {
 
   @ParameterizedTest
   @ValueSource(strings = {
-          "/irigenerator/demo",
+          "/irigenerator/test-case-0",
           "/irigenerator/test-case-1"
   })
   public void testURIConvertedForJsonLD11(final String resourceFolder) {
@@ -28,7 +28,7 @@ public class IriGeneratorCalculatorTest {
 
   @ParameterizedTest
   @ValueSource(strings = {
-          "/irigenerator/demo",
+          "/irigenerator/test-case-0",
           "/irigenerator/test-case-1"
   })
   public void testURIConvertedForJson5(final String resourceFolder) {
