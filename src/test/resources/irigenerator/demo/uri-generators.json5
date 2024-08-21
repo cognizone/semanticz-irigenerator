@@ -1,20 +1,20 @@
 {
   prefixes: {
-    demo: "http://demo.com/model#"
+    "eczm": "https://example.cogni.zone/model#"
   },
   generators: [
     {
       id: "One",
-      uriSelector: "select ?uri { ?uri a demo:One }",
-      variableSelector: "select ?id where { <#{[uri]}> demo:id ?id }",
+      uriSelector: "select ?uri { ?uri a eczm:One }",
+      variableSelector: "select ?id where { <#{[uri]}> eczm:id ?id }",
       uriTemplate: "#{[baseUri]}/#{[id]}"
     },
     {
       id: "Two",
-      uriSelector: "select ?uri { ?uri a demo:Two }",
+      uriSelector: "select ?uri { ?uri a eczm:Two }",
       variableSelector: "select ?year ?sequence where { \
-                           <#{[uri]}> demo:year ?year ; \
-                                      demo:sequence ?sequence \
+                           <#{[uri]}> eczm:year ?year ; \
+                                      eczm:sequence ?sequence \
                          }",
       uriTemplate: "#{[baseUri]}/#{[year]}/#{[sequence]}"
     }

@@ -15,17 +15,19 @@ import java.net.URL;
 @Slf4j
 public class IriGeneratorCalculatorTest {
 
-  private static final String BASE_URI = "http://asquare.cogni.zone";
+  private static final String BASE_URI = "https://example.cogni.zone";
 
   @ParameterizedTest
-  @ValueSource(strings = {"/irigenerator/demo"})
+  @ValueSource(strings = {
+          "/irigenerator/demo"
+  })
   public void testURIConvertedForJsonLD11(final String resourceFolder) {
     testURIConvertedForSyntax(resourceFolder + "/uri-generators.json", Format.JSONLD11, resourceFolder + "/original-model.ttl", resourceFolder + "/expected-model.ttl");
   }
 
   @ParameterizedTest
   @ValueSource(strings = {
-          "/irigenerator/demo",
+          "/irigenerator/demo"
   })
   public void testURIConvertedForJson5(final String resourceFolder) {
     testURIConvertedForSyntax(resourceFolder + "/uri-generators.json5", Format.JSON5, resourceFolder + "/original-model.ttl", resourceFolder + "/expected-model.ttl");
@@ -34,7 +36,7 @@ public class IriGeneratorCalculatorTest {
   private void testURIConvertedForSyntax(String generatorsResource, Format format, String originalModelResource, String expectedModelResource) {
     final URL uriGeneratorsResource = getClass().getResource(generatorsResource);
 
-    final IriGeneratorCalculator sut = new IriGeneratorCalculator("http://resource",
+    final IriGeneratorCalculator sut = new IriGeneratorCalculator("https://resource",
             new SpelService(),
             uriGeneratorsResource,
             format);
