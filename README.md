@@ -1,9 +1,8 @@
 # IRI Generator
 This project servers for generating IRIs using a predefined template based on existing RDF data.
 
-## Use-cases
+## Use-case: Renaming temporary IRIs generated on the front-end to the proper ones
 
-### Renaming temporary IRIs generated on the front-end to the proper ones
 Having an RDF resource with an IRI:
 ```
 @prefix eczm: <https://example.cogni.zone/model#> .
