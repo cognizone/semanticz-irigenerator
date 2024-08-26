@@ -68,7 +68,7 @@ public class IriGeneratorCalculator {
   }
 
   private void initPreparedStatements() {
-    preparedStatements.put("exists-uri", QueryFactory.create("ask { { ?x ?p ?o } union { ?s ?p ?x } } "));
+    preparedStatements.put("exists-uri", QueryFactory.create("ask { { ?uri ?p ?o } union { ?s ?p ?uri } } "));
   }
 
   public Model convert(Model model, Map<String, String> context) {
@@ -220,7 +220,7 @@ public class IriGeneratorCalculator {
 
   private boolean existsInModel(RdfStoreServiceAPI rdfStore, String newIri) {
     final QuerySolutionMap querySolution = new QuerySolutionMap();
-    querySolution.add("x", ResourceFactory.createResource(newIri));
+    querySolution.add("uri", ResourceFactory.createResource(newIri));
 
     return rdfStore.executeAskQuery(preparedStatements.get("exists-uri"), querySolution);
   }
