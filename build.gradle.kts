@@ -14,8 +14,8 @@ plugins {
     id("org.owasp.dependencycheck") version "10.0.3"
 }
 
-group = "zone.cogni.libs"
-version = "1.0-SNAPSHOT"
+group = "zone.cogni.semanticz"
+version = "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
