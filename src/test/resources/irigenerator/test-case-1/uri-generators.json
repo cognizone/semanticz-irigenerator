@@ -1,0 +1,56 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "irigenerator": "https://data.cogni.zone/voc/irigenerator/",
+    "uri": "@id",
+    "types": "@type",
+    "prefixes": {
+      "@id": "irigenerator:prefix",
+      "@type": "irigenerator:prefix-class",
+      "@context": {
+        "uri": "@id",
+        "types": "@type",
+        "prefix-name": "irigenerator:prefix-name",
+        "namespace": "irigenerator:namespace"
+      }
+    },
+    "generators": {
+      "@id": "irigenerator:generator",
+      "@type": "irigenerator:iri-generator",
+      "@context": {
+        "uri": "@id",
+        "types": "@type",
+        "uriSelector": "irigenerator:iri-selector",
+        "variableSelector": "irigenerator:variable-selector",
+        "uriTemplate": "irigenerator:iri-template"
+      }
+    }
+  },
+  "prefixes": [
+    {
+      "prefix-name": "eczm",
+      "namespace": "https://example.cogni.zone/model#"
+    },
+    {
+      "prefix-name": "xsd",
+      "namespace": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "generators": [
+    {
+      "uriSelector": "select ?uri { ?uri a eczm:Resource }",
+      "variableSelector": "select ?conceptId { select (max(?maxIndex)+1 as ?conceptId) { ?s a eczm:Resource bind(xsd:int(strafter(str(?s), 'prefix/')) as ?index) bind(if(?index < 40000, 39999, ?index) as ?maxIndex ) } }",
+      "uriTemplate": "#{[baseUri]}/prefix/#{[conceptId]}"
+    },
+    {
+      "uriSelector": "select ?uri { ?uri a eczm:ResourceVersion }",
+      "variableSelector": "select ?concept (max(?index) + 1 as ?newIndex) { ?concept eczm:hasVersion <#{[uri]}>. optional { ?concept eczm:hasVersion ?version } bind(coalesce(xsd:int(strafter(str(?version), 'version/')), 0 ) as ?index) } group by ?concept",
+      "uriTemplate": "#{[concept]}/version/#{[newIndex]}"
+    },
+    {
+      "uriSelector": "select ?uri { ?uri a eczm:SeeAlsoReference }",
+      "variableSelector": "select ?version (max(?index) + 1 as ?newIndex) { ?version eczm:seeAlsoReference <#{[uri]}>. optional { ?version eczm:seeAlsoReference ?seeAlso } bind(coalesce(xsd:int(strafter(str(?seeAlso), 'see-also/')), 0 ) as ?index) } group by ?version",
+      "uriTemplate": "#{[version]}/see-also/#{[newIndex]}"
+    }
+  ]
+}

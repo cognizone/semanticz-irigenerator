@@ -12,6 +12,7 @@ plugins {
     jacoco
     id("io.freefair.lombok") version "8.6"
     id("org.owasp.dependencycheck") version "9.2.0"
+// TODO requires Java 17    id("dev.yumi.gradle.licenser") version "1.2.0"
 }
 
 group = "zone.cogni.libs"
@@ -21,9 +22,16 @@ repositories {
     mavenCentral()
 }
 
+//license {
+//    rule(file("codeformat/HEADER"))
+//
+//    include("**/*.java")
+//    exclude("**/*.properties")
+//}
+
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11)) // specify the Java version
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 }
 
@@ -48,6 +56,7 @@ dependencies {
 
     testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$jupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
