@@ -12,7 +12,6 @@ plugins {
     jacoco
     id("io.freefair.lombok") version "8.6"
     id("org.owasp.dependencycheck") version "9.2.0"
-// TODO requires Java 17    id("dev.yumi.gradle.licenser") version "1.2.0"
 }
 
 group = "zone.cogni.libs"
@@ -21,13 +20,6 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
 }
-
-//license {
-//    rule(file("codeformat/HEADER"))
-//
-//    include("**/*.java")
-//    exclude("**/*.properties")
-//}
 
 java {
     toolchain {
