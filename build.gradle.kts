@@ -1,17 +1,17 @@
 val jenaVersion = "4.10.0"
 val springVersion = "5.3.+"
 val jakartaAnnotationApiVersion = "3.0.0"
-val guavaVersion = "33.2.1-jre"
-val jupiterVersion = "5.10.2"
+val guavaVersion = "33.3.0-jre"
+val jupiterVersion = "5.11.0"
 val jb4jsonldJacksonVersion = "0.14.3"
-val logbackVersion = "1.5.6"
+val logbackVersion = "1.5.7"
 
 plugins {
     `java-library`
     pmd
     jacoco
-    id("io.freefair.lombok") version "8.6"
-    id("org.owasp.dependencycheck") version "9.2.0"
+    id("io.freefair.lombok") version "8.10"
+    id("org.owasp.dependencycheck") version "10.0.3"
 }
 
 group = "zone.cogni.libs"
