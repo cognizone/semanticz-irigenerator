@@ -1,0 +1,13 @@
+@prefix eczm: <https://example.cogni.zone/model#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://resource/prefix/40000>
+    a               eczm:Resource ;
+    eczm:hasVersion <https://resource/prefix/40000/version/9> .
+
+<https://resource/prefix/40000/version/9>
+    a                     eczm:ResourceVersion ;
+    eczm:seeAlsoReference <https://resource/prefix/40000/version/9/see-also/6> .
+
+<https://resource/prefix/40000/version/9/see-also/6>
+    a eczm:SeeAlsoReference .

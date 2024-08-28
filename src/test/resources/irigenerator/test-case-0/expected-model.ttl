@@ -1,0 +1,8 @@
+@prefix eczm: <https://example.cogni.zone/model#> .
+
+<https://example.cogni.zone/5> a eczm:One ;
+                    eczm:id "5" .
+
+<https://example.cogni.zone/2021/0005> a eczm:Two ;
+                    eczm:year "2021" ;
+                    eczm:sequence "0005" .

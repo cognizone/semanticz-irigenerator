@@ -1,0 +1,22 @@
+{
+  prefixes: {
+    "eczm": "https://example.cogni.zone/model#"
+  },
+  generators: [
+    {
+      id: "One",
+      uriSelector: "select ?uri { ?uri a eczm:One }",
+      variableSelector: "select ?id where { <#{[uri]}> eczm:id ?id }",
+      uriTemplate: "#{[baseUri]}/#{[id]}"
+    },
+    {
+      id: "Two",
+      uriSelector: "select ?uri { ?uri a eczm:Two }",
+      variableSelector: "select ?year ?sequence where { \
+                           <#{[uri]}> eczm:year ?year ; \
+                                      eczm:sequence ?sequence \
+                         }",
+      uriTemplate: "#{[baseUri]}/#{[year]}/#{[sequence]}"
+    }
+  ]
+}
