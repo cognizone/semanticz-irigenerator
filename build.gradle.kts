@@ -99,9 +99,9 @@ publishing {
                 url.set("https://github.com/cognizone/semanticz")
                 
                 scm {
-                    connection.set("scm:git:git@github.com:cognizone/semanticz.git")
-                    developerConnection.set("scm:git:git@github.com:cognizone/semanticz.git")
-                    url.set("https://github.com/cognizone/semanticz")
+                    connection.set("scm:git@github.com:cognizone/semanticz-irigenerator.git")
+                    developerConnection.set("scm:git:git@github.com:cognizone/semanticz-irigenerator.git")
+                    url.set("https://github.com/cognizone/semanticz-irigenerator")
                 }
 
                 licenses {
