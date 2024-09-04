@@ -50,7 +50,6 @@ scmVersion {
 }
 
 
-
 pmd {
     isIgnoreFailures = true
     isConsoleOutput = true
