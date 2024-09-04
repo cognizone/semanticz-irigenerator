@@ -12,6 +12,8 @@ plugins {
     jacoco
     id("io.freefair.lombok") version "8.10"
     id("org.owasp.dependencycheck") version "10.0.3"
+    id("maven-publish")
+    id("signing")
 }
 
 group = "zone.cogni.semanticz"
@@ -25,6 +27,8 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
     }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 pmd {
@@ -69,4 +73,81 @@ tasks.test {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+}
+
+// Copy LICENSE file to the build JAR
+tasks.jar {
+    from("${projectDir}") {
+        include("LICENSE")
+        into("/")
+    }
+    from("${projectDir}") {
+        include("LICENSE")
+        into("META-INF")
+    }
+}
+
+// Publishing configuration for Maven Central
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+
+            pom {
+                name.set("Semanticz")
+                description.set("This project servers for generating IRIs using a predefined template based on existing RDF data.")
+                url.set("https://github.com/cognizone/semanticz")
+                
+                scm {
+                    connection.set("scm:git:git@github.com:cognizone/semanticz.git")
+                    developerConnection.set("scm:git:git@github.com:cognizone/semanticz.git")
+                    url.set("https://github.com/cognizone/semanticz")
+                }
+
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("cognizone")
+                        name.set("Cognizone")
+                        email.set("dev@cognizone.com")
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "Sonatype"
+            url = uri(if (version.endsWith("SNAPSHOT")) {
+                "${System.properties['ossrh.url']}/content/repositories/snapshots/"
+            } else {
+                "${System.properties['ossrh.url']}/service/local/staging/deploy/maven2/"
+            })
+            credentials {
+                username = System.properties['ossrh.username']
+                password = System.properties['ossrh.password']
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+        project.findProperty("signing.keyId")?.toString(),
+        project.findProperty("signing.password")?.toString(),
+        project.findProperty("signing.secretKeyRingFile")?.toString()
+    )
+    sign(publishing.publications["mavenJava"])
+}
+
+// Ensure signing task is invoked when publishing
+tasks.withType<PublishToMavenRepository> {
+    dependsOn(tasks.withType<Sign>())
 }
