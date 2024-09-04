@@ -125,10 +125,10 @@ publishing {
     repositories {
         maven {
             name = "Sonatype"
-            url = uri(if (version.endsWith("SNAPSHOT")) {
-                "${System.getProperty("ossrh.url")}/content/repositories/snapshots/"
+            url = uri(if (version.toString().endsWith("SNAPSHOT")) {
+                    "${System.getProperty("ossrh.url")}/content/repositories/snapshots/"
             } else {
-                "${System.getProperty("ossrh.url")}/service/local/staging/deploy/maven2/"
+                   "${System.getProperty("ossrh.url")}/service/local/staging/deploy/maven2/"
             })
             credentials {
                 username = System.getProperty("ossrh.username")
