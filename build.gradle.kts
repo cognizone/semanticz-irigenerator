@@ -139,11 +139,12 @@ publishing {
 }
 tasks.withType<Javadoc> {
     options {
-        // Suppress all Javadoc lint warnings
-        addStringOption("Xdoclint:none", "-quiet")
+        // Disables all doclint warnings, including HTML errors and missing tags
+        (this as StandardJavadocDocletOptions).addBooleanOption("Xdoclint:none", true)
     }
     isFailOnError = false // Ensure the build doesn't fail on Javadoc warnings or errors
 }
+
 
 
 
