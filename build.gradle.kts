@@ -138,9 +138,10 @@ publishing {
     }
 }
 tasks.withType<Javadoc> {
-    options.addStringOption("Xdoclint:none", "-quiet")
-    failOnError = false
+    options.addBooleanOption("Xdoclint:none", true)
+    isFailOnError = false // Use the `isFailOnError` setter for Gradle 8.5
 }
+
 
 
 signing {
