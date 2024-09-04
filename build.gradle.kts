@@ -94,8 +94,8 @@ publishing {
             from(components["java"])
 
             pom {
-                name.set("Semanticz")
-                description.set("This project servers for generating IRIs using a predefined template based on existing RDF data.")
+                name.set("SemanticZ")
+                description.set("Library for Semantic Development")
                 url.set("https://github.com/cognizone/semanticz")
                 
                 scm {
@@ -126,13 +126,13 @@ publishing {
         maven {
             name = "Sonatype"
             url = uri(if (version.endsWith("SNAPSHOT")) {
-                "${System.properties['ossrh.url']}/content/repositories/snapshots/"
+                "${System.getProperty("ossrh.url")}/content/repositories/snapshots/"
             } else {
-                "${System.properties['ossrh.url']}/service/local/staging/deploy/maven2/"
+                "${System.getProperty("ossrh.url")}/service/local/staging/deploy/maven2/"
             })
             credentials {
-                username = System.properties['ossrh.username']
-                password = System.properties['ossrh.password']
+                username = System.getProperty("ossrh.username")
+                password = System.getProperty("ossrh.password")
             }
         }
     }
