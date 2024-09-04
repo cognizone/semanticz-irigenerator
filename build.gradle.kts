@@ -1,3 +1,11 @@
+val jenaVersion = "4.10.0"
+val guavaVersion = "33.3.0-jre"
+val springVersion = "5.3.+"
+val jakartaAnnotationApiVersion = "3.0.0"
+val jb4jsonldJacksonVersion = "0.14.3"
+val logbackVersion = "1.5.7"
+val jupiterVersion = "5.11.0"
+
 plugins {
     `java-library`
     pmd
@@ -6,11 +14,11 @@ plugins {
     id("org.owasp.dependencycheck") version "10.0.3"
     id("maven-publish")
     id("signing")
-    id("pl.allegro.tech.build.axion-release") version "1.13.3" // Add this plugin
+    id("pl.allegro.tech.build.axion-release") version "1.13.3"
 }
 
 group = "zone.cogni.semanticz"
-version = scmVersion.version // Use version managed by the Axion Release Plugin
+version = scmVersion.version
 
 repositories {
     mavenCentral()
@@ -25,23 +33,20 @@ java {
 }
 
 scmVersion {
-    tag {
+    tag.apply {
         prefix = "v"
         versionSeparator = ""
         branchPrefix = mapOf(
             "release/.*" to "release-v",
             "hotfix/.*" to "hotfix-v"
         )
-        initialVersion = { rules, position ->
-            "1.0.0-SNAPSHOT" // Customize this to your initial version
-        }
     }
-    nextVersion {
+    initialVersion = { _, _ -> "1.0.0-SNAPSHOT" }
+    nextVersion.apply {
         suffix = "SNAPSHOT"
         separator = "-"
     }
 }
-
 
 pmd {
     isIgnoreFailures = true
@@ -85,7 +90,6 @@ tasks.jacocoTestReport {
     dependsOn(tasks.test)
 }
 
-// Copy LICENSE file to the build JAR
 tasks.jar {
     from("${projectDir}") {
         include("LICENSE")
@@ -97,7 +101,6 @@ tasks.jar {
     }
 }
 
-// Publishing configuration for Maven Central
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
@@ -105,7 +108,7 @@ publishing {
 
             pom {
                 name.set("Semanticz")
-                description.set("This project servers for generating IRIs using a predefined template based on existing RDF data.")
+                description.set("This project serves for generating IRIs using a predefined template based on existing RDF data.")
                 url.set("https://github.com/cognizone/semanticz")
 
                 scm {
@@ -139,9 +142,9 @@ publishing {
                     username = System.getProperty("ossrh.username")
                     password = System.getProperty("ossrh.password")
                 }
-                def stagingRepoUrl = "${System.getProperty('ossrh.url')}/service/local/staging/deploy/maven2"
-                def snapshotsRepoUrl = "${System.getProperty('ossrh.url')}/content/repositories/snapshots"
-                url = if (version.endsWith("SNAPSHOT")) snapshotsRepoUrl else stagingRepoUrl
+                val stagingRepoUrl = "${System.getProperty("ossrh.url")}/service/local/staging/deploy/maven2"
+                val snapshotsRepoUrl = "${System.getProperty("ossrh.url")}/content/repositories/snapshots"
+                url = uri(if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else stagingRepoUrl)
             }
         }
     }
@@ -149,15 +152,10 @@ publishing {
 
 tasks.withType<Javadoc> {
     options {
-        // Disables all doclint warnings, including HTML errors and missing tags
         (this as StandardJavadocDocletOptions).addBooleanOption("Xdoclint:none", true)
     }
-    isFailOnError = false // Ensure the build doesn't fail on Javadoc warnings or errors
+    isFailOnError = false
 }
-
-
-
-
 
 signing {
     useInMemoryPgpKeys(
@@ -170,7 +168,6 @@ signing {
     }
 }
 
-// Ensure signing task is invoked when publishing
 tasks.withType<PublishToMavenRepository> {
     dependsOn(tasks.withType<Sign>())
 }
