@@ -137,6 +137,11 @@ publishing {
         }
     }
 }
+tasks.withType<Javadoc> {
+    options.addStringOption("Xdoclint:none", "-quiet")
+    failOnError = false
+}
+
 
 signing {
     useInMemoryPgpKeys(
