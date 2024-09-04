@@ -1,11 +1,3 @@
-val jenaVersion = "4.10.0"
-val springVersion = "5.3.+"
-val jakartaAnnotationApiVersion = "3.0.0"
-val guavaVersion = "33.3.0-jre"
-val jupiterVersion = "5.11.0"
-val jb4jsonldJacksonVersion = "0.14.3"
-val logbackVersion = "1.5.7"
-
 plugins {
     `java-library`
     pmd
@@ -14,10 +6,11 @@ plugins {
     id("org.owasp.dependencycheck") version "10.0.3"
     id("maven-publish")
     id("signing")
+    id("pl.allegro.tech.build.axion-release") version "1.13.3" // Add this plugin
 }
 
 group = "zone.cogni.semanticz"
-version = "1.0.0"
+version = scmVersion.version // Use version managed by the Axion Release Plugin
 
 repositories {
     mavenCentral()
@@ -30,6 +23,25 @@ java {
     withJavadocJar()
     withSourcesJar()
 }
+
+scmVersion {
+    tag {
+        prefix = "v"
+        versionSeparator = ""
+        branchPrefix = mapOf(
+            "release/.*" to "release-v",
+            "hotfix/.*" to "hotfix-v"
+        )
+        initialVersion = { rules, position ->
+            "1.0.0-SNAPSHOT" // Customize this to your initial version
+        }
+    }
+    nextVersion {
+        suffix = "SNAPSHOT"
+        separator = "-"
+    }
+}
+
 
 pmd {
     isIgnoreFailures = true
@@ -46,8 +58,6 @@ tasks.withType<JavaCompile> {
 dependencies {
     implementation("org.apache.jena:jena-arq:$jenaVersion")
     implementation("com.google.guava:guava:$guavaVersion")
-    implementation("org.springframework:spring-core:$springVersion")
-    implementation("org.springframework:spring-context:$springVersion")
     implementation("org.springframework:spring-expression:$springVersion")
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
     implementation("cz.cvut.kbss.jsonld:jb4jsonld-jackson:$jb4jsonldJacksonVersion")
@@ -94,13 +104,13 @@ publishing {
             from(components["java"])
 
             pom {
-                name.set("SemanticZ")
-                description.set("Library for Semantic Development")
+                name.set("Semanticz")
+                description.set("This project servers for generating IRIs using a predefined template based on existing RDF data.")
                 url.set("https://github.com/cognizone/semanticz")
-                
+
                 scm {
                     connection.set("scm:git@github.com:cognizone/semanticz-irigenerator.git")
-                    developerConnection.set("scm:git:git@github.com:cognizone/semanticz-irigenerator.git")
+                    developerConnection.set("scm:git@github.com:cognizone/semanticz-irigenerator.git")
                     url.set("https://github.com/cognizone/semanticz-irigenerator")
                 }
 
@@ -123,20 +133,20 @@ publishing {
     }
 
     repositories {
-        maven {
-            name = "Sonatype"
-            url = uri(if (version.toString().endsWith("SNAPSHOT")) {
-                    "${System.getProperty("ossrh.url")}/content/repositories/snapshots/"
-            } else {
-                   "${System.getProperty("ossrh.url")}/service/local/staging/deploy/maven2/"
-            })
-            credentials {
-                username = System.getProperty("ossrh.username")
-                password = System.getProperty("ossrh.password")
+        if (project.hasProperty("publishToMavenCentral")) {
+            maven {
+                credentials {
+                    username = System.getProperty("ossrh.username")
+                    password = System.getProperty("ossrh.password")
+                }
+                def stagingRepoUrl = "${System.getProperty('ossrh.url')}/service/local/staging/deploy/maven2"
+                def snapshotsRepoUrl = "${System.getProperty('ossrh.url')}/content/repositories/snapshots"
+                url = if (version.endsWith("SNAPSHOT")) snapshotsRepoUrl else stagingRepoUrl
             }
         }
     }
 }
+
 tasks.withType<Javadoc> {
     options {
         // Disables all doclint warnings, including HTML errors and missing tags
@@ -155,7 +165,9 @@ signing {
         project.findProperty("signing.password")?.toString(),
         project.findProperty("signing.secretKeyRingFile")?.toString()
     )
-    sign(publishing.publications["mavenJava"])
+    if (project.hasProperty("publishToMavenCentral")) {
+        sign(publishing.publications["mavenJava"])
+    }
 }
 
 // Ensure signing task is invoked when publishing
