@@ -41,7 +41,6 @@ scmVersion {
             "hotfix/.*" to "hotfix-v"
         )
     }
-    initialVersion = { _, _ -> "1.0.0-SNAPSHOT" }
     nextVersion.apply {
         suffix = "SNAPSHOT"
         separator = "-"
