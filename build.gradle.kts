@@ -138,9 +138,13 @@ publishing {
     }
 }
 tasks.withType<Javadoc> {
-    options.addBooleanOption("Xdoclint:none", true)
-    isFailOnError = false // Use the `isFailOnError` setter for Gradle 8.5
+    options {
+        // Suppress all Javadoc lint warnings
+        addStringOption("Xdoclint:none", "-quiet")
+    }
+    isFailOnError = false // Ensure the build doesn't fail on Javadoc warnings or errors
 }
+
 
 
 
