@@ -1,6 +1,6 @@
 val jenaVersion = "4.10.0"
 val guavaVersion = "33.3.0-jre"
-val springVersion = "5.3.+"
+val springVersion = "5.3.39"
 val jakartaAnnotationApiVersion = "3.0.0"
 val jb4jsonldJacksonVersion = "0.14.3"
 val logbackVersion = "1.5.7"
