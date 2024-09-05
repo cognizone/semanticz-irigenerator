@@ -156,16 +156,7 @@ tasks.withType<Javadoc> {
 }
 
 signing {
-    useInMemoryPgpKeys(
-        project.findProperty("signing.keyId")?.toString(),
-        project.findProperty("signing.password")?.toString(),
-        project.findProperty("signing.secretKeyRingFile")?.toString()
-    )
     if (project.hasProperty("publishToMavenCentral")) {
         sign(publishing.publications["mavenJava"])
     }
-}
-
-tasks.withType<PublishToMavenRepository> {
-    dependsOn(tasks.withType<Sign>())
 }
