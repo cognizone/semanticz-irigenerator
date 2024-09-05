@@ -33,9 +33,6 @@ java {
 }
 
 scmVersion {
-    // Set the current version baseline to 1.0.0
-    version = "1.0.0"
-    
     tag.apply {
         prefix = "v"
         versionSeparator = ""
@@ -48,8 +45,9 @@ scmVersion {
         suffix = "SNAPSHOT"
         separator = "-"
     }
-    versionIncrementer("incrementPatch")
+    versionIncrementer("incrementPatch") // Increment patch version
 }
+
 
 
 pmd {
