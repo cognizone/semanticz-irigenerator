@@ -32,6 +32,7 @@ java {
     withSourcesJar()
 }
 
+version = scmVersion.version
 scmVersion {
     tag.apply {
         prefix = "v"
@@ -45,7 +46,7 @@ scmVersion {
         suffix = "SNAPSHOT"
         separator = "-"
     }
-    versionIncrementer("incrementPatch") // Increment patch version
+    versionIncrementer("incrementPatch") // Increment the patch version
 }
 
 
