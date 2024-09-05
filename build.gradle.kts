@@ -18,7 +18,7 @@ plugins {
 }
 
 group = "zone.cogni.semanticz"
-version = "1.0.0"
+version = "1.0.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -92,10 +92,6 @@ tasks.jacocoTestReport {
 tasks.jar {
     from("${projectDir}") {
         include("LICENSE")
-        into("/")
-    }
-    from("${projectDir}") {
-        include("LICENSE")
         into("META-INF")
     }
 }
@@ -106,9 +102,9 @@ publishing {
             from(components["java"])
 
             pom {
-                name.set("Semanticz")
+                name.set("semanticz-irigenerator")
                 description.set("This project serves for generating IRIs using a predefined template based on existing RDF data.")
-                url.set("https://github.com/cognizone/semanticz")
+                url.set("https://github.com/cognizone/semanticz-irigenerator")
 
                 scm {
                     connection.set("scm:git@github.com:cognizone/semanticz-irigenerator.git")
