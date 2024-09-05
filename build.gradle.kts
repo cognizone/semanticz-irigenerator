@@ -18,7 +18,7 @@ plugins {
 }
 
 group = "zone.cogni.semanticz"
-version = "1.0.0-SNAPSHOT"
+version = scmVersion.version
 
 repositories {
     mavenCentral()
