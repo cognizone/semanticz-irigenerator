@@ -1,1 +1,1 @@
-rootProject.name = "irigenerator"
+rootProject.name = "semanticz-irigenerator"
