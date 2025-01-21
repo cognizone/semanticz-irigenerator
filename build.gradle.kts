@@ -60,10 +60,7 @@ dependencies {
     implementation(libs.jb4jsonld.jackson)
 
     testImplementation(libs.logback.classic)
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.params)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(libs.junit.jupiter)
 }
 
 tasks.register("qualityCheck") {
