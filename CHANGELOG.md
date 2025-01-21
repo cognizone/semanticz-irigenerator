@@ -1,3 +1,6 @@
+2.0.1-SNAPSHOT
+- gradle version catalog
+
 2.0.0
 - renaming the artifact from 'irigenerator' to 'semanticz-irigenerator'
 

@@ -1,24 +1,15 @@
-val jenaVersion = "4.10.0"
-val guavaVersion = "33.3.0-jre"
-val springVersion = "5.3.39"
-val jakartaAnnotationApiVersion = "3.0.0"
-val jb4jsonldJacksonVersion = "0.14.3"
-val logbackVersion = "1.5.7"
-val jupiterVersion = "5.11.0"
-
 plugins {
     `java-library`
     pmd
     jacoco
-    id("io.freefair.lombok") version "8.10"
-    id("org.owasp.dependencycheck") version "10.0.3"
+    alias(libs.plugins.lombok)
+    alias(libs.plugins.dependencycheck)
     id("maven-publish")
     id("signing")
-    id("pl.allegro.tech.build.axion-release") version "1.13.3"
+    alias(libs.plugins.axion.release)
 }
 
 group = "zone.cogni.semanticz"
-
 
 repositories {
     mavenCentral()
@@ -49,7 +40,6 @@ scmVersion {
     versionIncrementer("incrementPatch") // Increment the patch version
 }
 
-
 pmd {
     isIgnoreFailures = true
     isConsoleOutput = true
@@ -63,16 +53,16 @@ tasks.withType<JavaCompile> {
 }
 
 dependencies {
-    implementation("org.apache.jena:jena-arq:$jenaVersion")
-    implementation("com.google.guava:guava:$guavaVersion")
-    implementation("org.springframework:spring-expression:$springVersion")
-    implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationApiVersion")
-    implementation("cz.cvut.kbss.jsonld:jb4jsonld-jackson:$jb4jsonldJacksonVersion")
+    implementation(libs.jena.arq)
+    implementation(libs.guava)
+    implementation(libs.spring.expression)
+    implementation(libs.jakarta.annotation.api)
+    implementation(libs.jb4jsonld.jackson)
 
-    testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$jupiterVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
+    testImplementation(libs.logback.classic)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
+    testRuntimeOnly(libs.junit.jupiter.engine)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
