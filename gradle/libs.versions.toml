@@ -1,0 +1,29 @@
+[versions]
+axion = "1.13.3"
+dependencycheck = "10.0.3"
+guava = "33.3.0-jre"
+jakarta-annotation-api = "3.0.0"
+jb4jsonld-jackson = "0.14.3"
+jena = "4.10.0"
+junit = "5.11.0"
+logback = "1.5.7"
+lombok = "8.10"
+spring = "5.3.39"
+
+[libraries]
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation-api" }
+jb4jsonld-jackson = { module = "cz.cvut.kbss.jsonld:jb4jsonld-jackson", version.ref = "jb4jsonld-jackson" }
+jena-arq = { module = "org.apache.jena:jena-arq", version.ref = "jena" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+spring-expression = { module = "org.springframework:spring-expression", version.ref = "spring" }
+
+[bundles]
+
+[plugins]
+axion-release = { id = "pl.allegro.tech.build.axion-release", version.ref = "axion" }
+dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "dependencycheck" }
+lombok = { id = "io.freefair.lombok", version.ref = "lombok" }
