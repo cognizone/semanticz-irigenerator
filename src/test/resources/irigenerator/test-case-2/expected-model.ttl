@@ -1,0 +1,6 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix eczm: <https://example.cogni.zone/model#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://example.cogni.zone/prefix/0>
+    a               eczm:Resource .

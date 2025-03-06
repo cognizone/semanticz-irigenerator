@@ -1,0 +1,14 @@
+{
+  prefixes: {
+    eczm: "https://example.cogni.zone/model#",
+    xsd: "http://www.w3.org/2001/XMLSchema#"
+  },
+  generators: [
+    {
+      id: "Resource",
+      uriSelector: "select ?uri { ?uri a eczm:Resource }",
+      variableSelector: "select ?conceptId { }",
+      uriTemplate: "#{[baseUri]}/prefix/#{[conceptId] == null ? '0' : [conceptId]}"
+    }
+  ]
+}

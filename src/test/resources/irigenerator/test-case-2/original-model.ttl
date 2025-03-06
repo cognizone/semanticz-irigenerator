@@ -1,0 +1,5 @@
+@prefix eczm: <https://example.cogni.zone/model#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<https://resource/prefix/40000>
+    a               eczm:Resource .
