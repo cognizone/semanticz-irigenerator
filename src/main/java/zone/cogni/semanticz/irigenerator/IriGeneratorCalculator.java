@@ -226,7 +226,7 @@ public class IriGeneratorCalculator {
   }
 
   /**
-   * @return empty optional if one of resources start with a <code>newIriPrefix</code> !
+   * @return empty optional if one of the resources start with a <code>newIriPrefix</code> !
    * else a map of variables to be used in IRI template!
    */
   private Optional<Map<String, String>> getQueryMap(Supplier<String> context,
@@ -239,19 +239,14 @@ public class IriGeneratorCalculator {
     final Map<String, RDFNode> nodeMap = result1.get(0);
     boolean isBadMatch = nodeMap.values()
             .stream()
-            .peek(node -> nonNullCheck(nodeMap, node))
-            .anyMatch(node -> node.isURIResource()
+            .anyMatch(node -> node != null && node.isURIResource()
                     && node.asResource().getURI().startsWith(newIriPrefix));
     if (isBadMatch) return Optional.empty();
 
     final Map<String, String> result = new HashMap<>();
-    nodeMap.forEach((k, v) -> result.put(k, (v.isResource() ? v.asResource().getURI() : v.asLiteral().getString())));
+    nodeMap.forEach((k, v) -> result.put(k, (v == null ? null : (v.isResource() ? v.asResource().getURI() : v.asLiteral().getString()))));
 
     return Optional.of(result);
-  }
-
-  private void nonNullCheck(Map<String, RDFNode> nodeMap, RDFNode node) {
-    if (node == null) throw new RuntimeException("variableSelector result has some null values: " + nodeMap);
   }
 
   private Set<String> getNewSelectorIris(RdfStoreServiceAPI rdfStore, IriGenerator generator) {

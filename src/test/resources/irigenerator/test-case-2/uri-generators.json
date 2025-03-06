@@ -1,0 +1,46 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "irigenerator": "https://data.cogni.zone/voc/irigenerator/",
+    "uri": "@id",
+    "types": "@type",
+    "prefixes": {
+      "@id": "irigenerator:prefix",
+      "@type": "irigenerator:prefix-class",
+      "@context": {
+        "uri": "@id",
+        "types": "@type",
+        "prefix-name": "irigenerator:prefix-name",
+        "namespace": "irigenerator:namespace"
+      }
+    },
+    "generators": {
+      "@id": "irigenerator:generator",
+      "@type": "irigenerator:iri-generator",
+      "@context": {
+        "uri": "@id",
+        "types": "@type",
+        "uriSelector": "irigenerator:iri-selector",
+        "variableSelector": "irigenerator:variable-selector",
+        "uriTemplate": "irigenerator:iri-template"
+      }
+    }
+  },
+  "prefixes": [
+    {
+      "prefix-name": "eczm",
+      "namespace": "https://example.cogni.zone/model#"
+    },
+    {
+      "prefix-name": "xsd",
+      "namespace": "http://www.w3.org/2001/XMLSchema#"
+    }
+  ],
+  "generators": [
+    {
+      "uriSelector": "select ?uri { ?uri a eczm:Resource }",
+      "variableSelector": "select ?conceptId { }",
+      "uriTemplate": "#{[baseUri]}/prefix/#{[conceptId] == null ? '0' : [conceptId]}"
+    }
+  ]
+}
